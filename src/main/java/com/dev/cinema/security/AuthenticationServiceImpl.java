@@ -23,7 +23,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 return user;
             }
         }
-        throw new AuthenticationException("Can't get login by email " + email);
+        throw new AuthenticationException("The login or password is incorrect");
     }
 
     @Override
