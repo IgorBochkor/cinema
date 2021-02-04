@@ -5,15 +5,18 @@ import com.dev.cinema.lib.Injector;
 import com.dev.cinema.model.CinemaHall;
 import com.dev.cinema.model.Movie;
 import com.dev.cinema.model.MovieSession;
+import com.dev.cinema.model.Order;
 import com.dev.cinema.model.ShoppingCart;
 import com.dev.cinema.model.User;
 import com.dev.cinema.security.AuthenticationService;
 import com.dev.cinema.service.CinemaHallService;
 import com.dev.cinema.service.MovieService;
 import com.dev.cinema.service.MovieSessionService;
+import com.dev.cinema.service.OrderService;
 import com.dev.cinema.service.ShoppingCartService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Main {
     private static Injector injector = Injector.getInstance("com.dev.cinema");
@@ -27,6 +30,8 @@ public class Main {
             = (AuthenticationService) injector.getInstance(AuthenticationService.class);
     private static ShoppingCartService shoppingCartService
             = (ShoppingCartService) injector.getInstance(ShoppingCartService.class);
+    private static OrderService orderService
+            = (OrderService) injector.getInstance(OrderService.class);
 
     public static void main(String[] args) throws AuthenticationException {
         Movie movie = new Movie();
@@ -46,8 +51,8 @@ public class Main {
         movieSession.setCinemaHall(cinemaHall);
         movieSessionSecond.setMovie(movie);
         movieSessionSecond.setCinemaHall(cinemaHallSecond);
-        movieSession.setShowTime(LocalDateTime.of(2021,2,1,23,0));
-        movieSessionSecond.setShowTime(LocalDateTime.of(2021,2,1,18,0));
+        movieSession.setShowTime(LocalDateTime.of(2021,2,4,23,0));
+        movieSessionSecond.setShowTime(LocalDateTime.of(2021,2,4,18,0));
 
         movieService.add(movie);
         cinemaHallService.add(cinemaHall);
@@ -57,6 +62,7 @@ public class Main {
 
         movieService.getAll().forEach(System.out::println);
         cinemaHallService.getAll().forEach(System.out::println);
+        System.out.println("findAvailableSessions");
         movieSessionService.findAvailableSessions(movie.getId(),
                 LocalDate.now()).forEach(System.out::println);
 
@@ -72,10 +78,12 @@ public class Main {
         shoppingCartService.addSession(movieSession, user);
         shoppingCartService.addSession(movieSessionSecond, user);
         ShoppingCart userCartWithTickets = shoppingCartService.getByUser(user);
-        System.out.println(userCartWithTickets);
+        System.out.println("userCartWithTickets : " + userCartWithTickets);
 
-        shoppingCartService.clear(userCartWithTickets);
-        ShoppingCart cartServiceByUser = shoppingCartService.getByUser(user);
-        System.out.println(cartServiceByUser);
+        Order order = orderService.completeOrder(userCartWithTickets);
+        System.out.println("order : " + order);
+        System.out.println(userCartWithTickets);
+        List<Order> ordersHistory = orderService.getOrdersHistory(user);
+        System.out.println(ordersHistory);
     }
 }
