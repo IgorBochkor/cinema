@@ -83,7 +83,8 @@ public class Main {
         Order order = orderService.completeOrder(userCartWithTickets);
         System.out.println("order : " + order);
         System.out.println(userCartWithTickets);
-        List<Order> ordersHistory = orderService.getOrdersHistory(user);
-        System.out.println(ordersHistory);
+        List<Order> orderList = orderService.getOrdersHistory(user);
+        System.out.println(orderList);
+        System.out.println(orderList.size());
     }
 }
