@@ -28,5 +28,4 @@ public class MovieSessionRequestDto {
     public void setShowTime(String showTime) {
         this.showTime = showTime;
     }
-
 }
