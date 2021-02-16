@@ -8,5 +8,5 @@ public interface UserDao {
 
     Optional<User> findByEmail(String email);
 
-    Optional<User> get(Long id);
+    Optional<User> getById(Long id);
 }
