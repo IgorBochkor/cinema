@@ -15,7 +15,7 @@ public class OrderMapper {
         OrderResponseDto responseDto = new OrderResponseDto();
         responseDto.setOrderId(order.getId());
         responseDto.setUserId(order.getUser().getId());
-        responseDto.setEmail(order.getUser().getEmail());
+        responseDto.setUserEmail(order.getUser().getEmail());
         responseDto.setTickets(order.getTickets()
                 .stream()
                 .map(Ticket::getId)

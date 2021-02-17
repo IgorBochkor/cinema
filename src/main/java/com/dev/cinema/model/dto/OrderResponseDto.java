@@ -6,7 +6,7 @@ public class OrderResponseDto {
     private Long orderId;
     private List<Long> tickets;
     private Long userId;
-    private String email;
+    private String userEmail;
     private String showTime;
 
     public Long getOrderId() {
@@ -33,12 +33,12 @@ public class OrderResponseDto {
         this.userId = userId;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUserEmail() {
+        return userEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public String getShowTime() {
