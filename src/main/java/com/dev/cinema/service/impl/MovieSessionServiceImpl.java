@@ -34,4 +34,9 @@ public class MovieSessionServiceImpl implements MovieSessionService {
     public void deleteById(Long id) {
         movieSessionDao.deleteById(id);
     }
+
+    @Override
+    public MovieSession getById(Long id) {
+        return movieSessionDao.getById(id).get();
+    }
 }
