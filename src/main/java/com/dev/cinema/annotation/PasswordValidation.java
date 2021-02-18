@@ -21,10 +21,4 @@ public @interface PasswordValidation {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
-    @Target({ElementType.TYPE})
-    @Retention(RetentionPolicy.RUNTIME)
-    @interface List {
-        PasswordValidation[] value();
-    }
 }

@@ -7,7 +7,6 @@ import org.springframework.beans.BeanWrapperImpl;
 
 public class PasswordValidator
         implements ConstraintValidator<PasswordValidation, Object> {
-
     private String field;
     private String fieldMatch;
 
