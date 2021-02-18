@@ -8,6 +8,7 @@ import com.dev.cinema.service.mapper.MovieSessionMapper;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,7 +51,7 @@ public class MovieSessionController {
 
     @PutMapping("/{id}")
     public void update(@PathVariable Long id,
-                       @RequestBody MovieSessionRequestDto movieSessionRequestDto) {
+                       @RequestBody @Valid MovieSessionRequestDto movieSessionRequestDto) {
         MovieSession movieSession
                 = movieSessionMapper.mapRequestDtoToMovieSession(movieSessionRequestDto);
         movieSession.setId(id);

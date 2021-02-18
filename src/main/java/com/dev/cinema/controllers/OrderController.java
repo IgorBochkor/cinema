@@ -1,5 +1,6 @@
 package com.dev.cinema.controllers;
 
+import com.dev.cinema.model.User;
 import com.dev.cinema.model.dto.OrderResponseDto;
 import com.dev.cinema.service.OrderService;
 import com.dev.cinema.service.ShoppingCartService;
@@ -7,10 +8,11 @@ import com.dev.cinema.service.UserService;
 import com.dev.cinema.service.mapper.OrderMapper;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,13 +32,17 @@ public class OrderController {
     }
 
     @PostMapping("/complete")
-    public void completeOrder(@RequestParam Long userId) {
-        orderService.completeOrder(shoppingCartService.getByUser(userService.getById(userId)));
+    public void completeOrder(Authentication auth) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = userService.findByEmail(userDetails.getUsername()).get();
+        orderService.completeOrder(shoppingCartService.getByUser(user));
     }
 
     @GetMapping
-    public List<OrderResponseDto> get(@RequestParam Long userId) {
-        return orderService.getOrdersHistory(userService.getById(userId)).stream()
+    public List<OrderResponseDto> get(Authentication auth) {
+        UserDetails userDetails = (UserDetails) auth.getPrincipal();
+        User user = userService.findByEmail(userDetails.getUsername()).get();
+        return orderService.getOrdersHistory(userService.getById(user.getId())).stream()
                 .map(orderMapper::mapOrderToResponseDto)
                 .collect(Collectors.toList());
     }
