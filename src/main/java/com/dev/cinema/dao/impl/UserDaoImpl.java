@@ -44,7 +44,8 @@ public class UserDaoImpl implements UserDao {
     public Optional<User> findByEmail(String email) {
         try (Session session = sessionFactory.openSession()) {
             Query<User> findUserByEmail
-                    = session.createQuery("FROM User m where m.email = :email", User.class)
+                    = session.createQuery("FROM User u LEFT JOIN FETCH u.roles "
+                    + "where u.email = :email ", User.class)
                     .setParameter("email", email);
             return findUserByEmail.uniqueResultOptional();
         } catch (Exception e) {
@@ -55,7 +56,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> getById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return Optional.ofNullable(session.get(User.class, id));
+            Query<User> findUserByEmail
+                    = session.createQuery("FROM User u LEFT JOIN FETCH u.roles "
+                    + "where u.id = :id ", User.class)
+                    .setParameter("id", id);
+            return findUserByEmail.uniqueResultOptional();
         } catch (Exception e) {
             throw new DataProcessingException("Error retrieving user by id " + id, e);
         }
