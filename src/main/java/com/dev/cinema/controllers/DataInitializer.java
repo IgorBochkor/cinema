@@ -3,25 +3,21 @@ package com.dev.cinema.controllers;
 import com.dev.cinema.model.Role;
 import com.dev.cinema.model.User;
 import com.dev.cinema.service.RoleService;
-import com.dev.cinema.service.ShoppingCartService;
 import com.dev.cinema.service.UserService;
-import java.util.List;
+import java.util.Set;
 import javax.annotation.PostConstruct;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
-@Controller
-public class InjectDataController {
+@Component
+public class DataInitializer {
     private static final String ROLE_ADMIN = "ADMIN";
     private static final String ROLE_USER = "USER";
     private final UserService userService;
     private final RoleService roleService;
-    private final ShoppingCartService shoppingCartService;
 
-    public InjectDataController(UserService userService,
-                                RoleService roleService, ShoppingCartService shoppingCartService) {
+    public DataInitializer(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.shoppingCartService = shoppingCartService;
     }
 
     @PostConstruct
@@ -35,8 +31,7 @@ public class InjectDataController {
         User userAdmin = new User();
         userAdmin.setEmail("admin");
         userAdmin.setPassword("123456");
-        userAdmin.setRoles(List.of(roleAdmin,roleUser));
+        userAdmin.setRoles(Set.of(roleAdmin,roleUser));
         userService.add(userAdmin);
-        shoppingCartService.registerNewShoppingCart(userAdmin);
     }
 }
